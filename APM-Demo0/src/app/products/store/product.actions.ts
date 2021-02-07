@@ -14,14 +14,16 @@ export const clearCurrentProductCode = createAction(
 export const initializeCurrentProductCode = createAction(
     '[Product] Initialize Current Product Code'
 );
-export const LoadProducts = createAction(
+export const loadProducts = createAction(
     '[Product] Load Products'
 );
 
-export const LoadProductsSuccess = createAction(
-    '[Product] Load Products Success'
+export const loadProductsSuccess = createAction(
+    '[Product] Load Products Success',
+    props<{products: Product[]}>()
 );
 
-export const LoadProductsFailure = createAction(
-    '[Product] Load Products Failure'
+export const loadProductsFailure = createAction(
+    '[Product] Load Products Failure',
+    props<{error: string}>()
 );

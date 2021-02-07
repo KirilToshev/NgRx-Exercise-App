@@ -6,7 +6,8 @@ import * as ProductActions from './product.actions';
 const initialState: ProductState = {
     showProductCode: true,
     currentProduct: null,
-    products: []
+    products: [],
+    error: ''
 }
 
 const productFeatureSelector = createFeatureSelector<ProductState>('products');
@@ -26,6 +27,11 @@ export const getProductsSelector = createSelector(
     productState => productState.products
 );
 
+export const getProductErrorSelector = createSelector(
+    productFeatureSelector,
+    productState => productState.error
+)
+
 export interface State extends AppState.State {
     products: ProductState
 }
@@ -33,7 +39,8 @@ export interface State extends AppState.State {
 export interface ProductState {
     showProductCode: boolean,
     currentProduct: Product,
-    products: Product[]
+    products: Product[],
+    error: string
 }
 
 export const productReducer = createReducer<ProductState>(
@@ -67,6 +74,20 @@ export const productReducer = createReducer<ProductState>(
                 description: '',
                 starRating: 0
             }
+        }
+    }),
+    on(ProductActions.loadProductsSuccess, (state, action): ProductState =>{
+        return{
+            ...state,
+            products: action.products,
+            error: ''
+        }
+    }),
+    on(ProductActions.loadProductsFailure, (state, action): ProductState => {
+        return {
+            ...state,
+            error: action.error,
+            products: []
         }
     })
 );

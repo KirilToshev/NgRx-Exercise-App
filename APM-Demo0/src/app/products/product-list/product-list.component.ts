@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 
 import { Product } from '../product';
-import { ProductService } from '../product.service';
-import { State, getShowProductCodeSelector, getCurrentProductSelector } from '../store/product.reducer';
+import { State, getShowProductCodeSelector, getCurrentProductSelector, getProductsSelector, getProductErrorSelector } from '../store/product.reducer';
 import * as ProductActions from '../store/product.actions'
 
 @Component({
@@ -15,32 +14,22 @@ import * as ProductActions from '../store/product.actions'
 })
 export class ProductListComponent implements OnInit {
   pageTitle = 'Products';
-  errorMessage: string;
 
-  displayCode: boolean;
-
-  products: Product[];
-
-  // Used to highlight the selected product in the list
-  selectedProduct: Product | null;
+  displayCode$: Observable<boolean>;
+  products$: Observable<Product[]>;
+  selectedProduct$: Observable<Product>;
+  errorMessage$: Observable<string>;
 
   constructor(
-    private store: Store<State>,
-    private productService: ProductService) { }
+    private store: Store<State>
+  ) { }
 
   ngOnInit(): void {
-    this.store.select(getCurrentProductSelector).subscribe(
-      currentProduct => this.selectedProduct = currentProduct
-    );
-
-    this.productService.getProducts().subscribe({
-      next: (products: Product[]) => this.products = products,
-      error: err => this.errorMessage = err
-    });
-
-    this.store.select(getShowProductCodeSelector).subscribe(showProductCode => {
-        this.displayCode = showProductCode;
-    });
+    this.store.dispatch(ProductActions.loadProducts());
+    this.selectedProduct$ = this.store.select(getCurrentProductSelector);
+    this.products$ = this.store.select(getProductsSelector);
+    this.displayCode$ = this.store.select(getShowProductCodeSelector);
+    this.errorMessage$ = this.store.select(getProductErrorSelector);
   }
 
   checkChanged(): void {
@@ -52,6 +41,6 @@ export class ProductListComponent implements OnInit {
   }
 
   productSelected(product: Product): void {
-    this.store.dispatch(ProductActions.setCurrentProductCode({product}));
+    this.store.dispatch(ProductActions.setCurrentProductCode({ product }));
   }
 }
