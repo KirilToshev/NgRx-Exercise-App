@@ -15,10 +15,10 @@ import * as ProductActions from '../store/product.actions'
 export class ProductListComponent implements OnInit {
   pageTitle = 'Products';
 
+  errorMessage$: Observable<string>;
   displayCode$: Observable<boolean>;
   products$: Observable<Product[]>;
   selectedProduct$: Observable<Product>;
-  errorMessage$: Observable<string>;
 
   constructor(
     private store: Store<State>
@@ -37,10 +37,10 @@ export class ProductListComponent implements OnInit {
   }
 
   newProduct(): void {
-    this.store.dispatch(ProductActions.initializeCurrentProductCode());
+    this.store.dispatch(ProductActions.initializeCurrentProduct());
   }
 
   productSelected(product: Product): void {
-    this.store.dispatch(ProductActions.setCurrentProductCode({ product }));
+    this.store.dispatch(ProductActions.setCurrentProductId({ currentProductId: product.id }));
   }
 }

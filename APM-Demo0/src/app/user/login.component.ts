@@ -13,8 +13,7 @@ import * as UserActions from './store/user.actions'
 })
 export class LoginComponent implements OnInit {
   pageTitle = 'Log In';
-
-  maskUserName: boolean;
+  maskUserName$: any;
 
   constructor(
     private authService: AuthService, 
@@ -22,9 +21,7 @@ export class LoginComponent implements OnInit {
     private store: Store<any>) { }
 
   ngOnInit(): void {
-    this.store.select(getMaskUserNameSelector).subscribe(maskUserName => {
-      this.maskUserName = maskUserName;
-    })
+    this.maskUserName$ = this.store.select(getMaskUserNameSelector);
   }
 
   cancel(): void {

@@ -4,15 +4,15 @@ import { Product } from '../product';
 export const toggleProductCode = createAction(
     '[Product] Toggle Product Code'
 );
-export const setCurrentProductCode = createAction(
-    '[Product] Set Current Product Code',
-    props<{ product: Product }>()
+export const setCurrentProductId = createAction(
+    '[Product] Set Current Product Id',
+    props<{ currentProductId: number }>()
 );
-export const clearCurrentProductCode = createAction(
-    '[Product] Clear Current Product Code'
+export const clearCurrentProduct = createAction(
+    '[Product] Clear Current Product'
 );
-export const initializeCurrentProductCode = createAction(
-    '[Product] Initialize Current Product Code'
+export const initializeCurrentProduct = createAction(
+    '[Product] Initialize Current Product'
 );
 export const loadProducts = createAction(
     '[Product] Load Products'
@@ -25,5 +25,20 @@ export const loadProductsSuccess = createAction(
 
 export const loadProductsFailure = createAction(
     '[Product] Load Products Failure',
+    props<{error: string}>()
+);
+
+export const updateProduct = createAction(
+    '[Product] Update Product',
+    props<{product: Product}>()
+);
+
+export const updateProductSuccess = createAction(
+    '[Product] Update Product Success',
+    props<{product: Product}>()
+);
+
+export const updateProductFailure = createAction(
+    '[Product] Update Product Failure',
     props<{error: string}>()
 );

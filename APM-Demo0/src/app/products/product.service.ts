@@ -15,7 +15,6 @@ export class ProductService {
   constructor(private http: HttpClient) { }
 
   getProducts(): Observable<Product[]> {
-    //return throwError("Test error msg.");
     return this.http.get<Product[]>(this.productsUrl)
       .pipe(
         
